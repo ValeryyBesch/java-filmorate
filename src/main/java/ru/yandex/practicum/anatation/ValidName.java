@@ -28,7 +28,6 @@ class DisplayNameValidator implements ConstraintValidator<ValidName, User> {
     @Override
     public boolean isValid(User user, ConstraintValidatorContext context) {
         if (user.getName() == null || user.getName().isEmpty()) {
-            // Если имя для отображения пустое, проверяем логин
             return user.getLogin() != null && !user.getLogin().isEmpty();
         }
         return true;

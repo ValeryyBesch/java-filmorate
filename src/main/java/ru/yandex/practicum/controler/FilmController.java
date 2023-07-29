@@ -1,7 +1,6 @@
 package ru.yandex.practicum.controler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.model.Film;
 
@@ -14,14 +13,13 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/film")
-@Validated
+@RequestMapping("/films")
 public class FilmController {
-    private Map<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>();
     private int generateId = 1;
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
+    public Film addFilm(@RequestBody @Valid Film film) {
         log.debug("добавляем фильм: {}", film);
         if (film == null) {
             System.out.println("нет фильма");
@@ -33,18 +31,13 @@ public class FilmController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Film updateUser(@PathVariable int id, @RequestBody @Valid Film film1) {
-        log.debug("обновляем пользователя: {}", film1);
-        Film film = films.get(id);
-
-        if (film != null) {
-            film.setName(film1.getName());
-            film.setDescription(film1.getDescription());
-            film.setDuration(film1.getDuration());
-            film.setReleaseDate(film1.getReleaseDate());
-            film.setId(film1.getId());
-            films.put(id, film);
+    @PutMapping
+    public Film updateUser(@RequestBody @Valid Film film) {
+        log.debug("обновляем фильм: {}", film);
+        if (films.containsKey(film.getId())) {
+            films.put(film.getId(), film);
+        } else {
+            throw new RuntimeException("фильм не найден");
         }
         return film;
     }

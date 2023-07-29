@@ -14,7 +14,7 @@ class FilmControllerTest {
             .id(1)
             .name("nameFilm")
             .duration(100)
-            .releaseDate(LocalDate.of(2000,10,10))
+            .releaseDate(LocalDate.of(2000, 10, 10))
             .description("description")
             .build();
 
@@ -30,7 +30,7 @@ class FilmControllerTest {
                 .id(1)
                 .name("name")
                 .duration(100)
-                .releaseDate(LocalDate.of(2000,10,10))
+                .releaseDate(LocalDate.of(2000, 10, 10))
                 .description("description")
                 .build();
         filmController.addFilm(film);

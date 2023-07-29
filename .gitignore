@@ -9,6 +9,7 @@
 *.rar
 .vscode/
 /.mvn/
+checkstyle.xml
 mvnw.cmd
 mvnw
 hs_err_pid*

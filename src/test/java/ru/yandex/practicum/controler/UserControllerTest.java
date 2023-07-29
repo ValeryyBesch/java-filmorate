@@ -14,7 +14,7 @@ class UserControllerTest {
             .email("test@email.com")
             .login("login")
             .name("name")
-            .birthday(LocalDate.of(1997,10,10))
+            .birthday(LocalDate.of(1997, 10, 10))
             .build();
 
     @Test
@@ -30,7 +30,7 @@ class UserControllerTest {
                 .email("test@email.ru")
                 .login("login")
                 .name("name")
-                .birthday(LocalDate.of(1997,10,10))
+                .birthday(LocalDate.of(1997, 10, 10))
                 .build();
         userController.createUser(user);
         userController.updateUser(user1);

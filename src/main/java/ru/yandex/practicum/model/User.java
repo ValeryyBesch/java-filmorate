@@ -1,10 +1,9 @@
 package ru.yandex.practicum.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import ru.yandex.practicum.anatation.ValidName;
+
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;

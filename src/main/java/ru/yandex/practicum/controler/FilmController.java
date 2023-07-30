@@ -19,16 +19,11 @@ public class FilmController {
     private int generateId = 1;
 
     @PostMapping
-    public Film addFilm(@RequestBody @Valid Film film) {
+    public Film addFilm(@RequestBody @Valid Film film) { //может я что-то не так делаю, но убрав @RequestBody, перестали проходить тесты в postman
         log.debug("добавляем фильм: {}", film);
-        if (film == null) {
-            System.out.println("нет фильма");
-            return null;
-        } else {
             film.setId(generateId++);
             films.put(film.getId(), film);
             return film;
-        }
     }
 
     @PutMapping
@@ -37,6 +32,7 @@ public class FilmController {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
+            log.debug("фильм с {} id не найден", film.getId());
             throw new RuntimeException("фильм не найден");
         }
         return film;

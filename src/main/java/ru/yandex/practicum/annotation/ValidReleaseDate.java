@@ -1,4 +1,4 @@
-package ru.yandex.practicum.anatation;
+package ru.yandex.practicum.annotation;
 
 import javax.validation.Constraint;
 import java.lang.annotation.Documented;

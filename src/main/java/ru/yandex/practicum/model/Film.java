@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.anatation.ValidReleaseDate;
+import ru.yandex.practicum.annotation.ValidReleaseDate;
 
 import java.time.LocalDate;
 

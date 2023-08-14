@@ -1,25 +1,37 @@
 package ru.yandex.practicum.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@Builder(toBuilder = true)
-@AllArgsConstructor
 public class User {
-    private int id;
+    private Long id;
+
+    @NotNull
+    @NotBlank
     @Email
-    @NotEmpty
     private String email;
+
+    @NotNull
     @NotBlank
     private String login;
-    // так и не понял как через свою аннотацию установить логин если поле пустое
+
     private String name;
     @Past
     private LocalDate birthday;
+
+    private Set<Long> friends = new HashSet<>();
+
+    public User(Long id, String email, String login, String name, LocalDate birthday) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.name = (name == null || name.isEmpty() || name.isBlank()) ? login : name;
+        this.birthday = birthday;
+    }
+
 }

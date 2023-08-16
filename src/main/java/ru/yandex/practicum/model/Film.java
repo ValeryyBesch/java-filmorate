@@ -31,5 +31,6 @@ public class Film {
     @NotNull
     @Positive
     private int duration;
-    private Set<Long> likes;
+
+    private Set<Long> likes = new HashSet<>();
 }

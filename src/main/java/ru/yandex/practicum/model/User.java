@@ -33,5 +33,4 @@ public class User {
         this.name = (name == null || name.isEmpty() || name.isBlank()) ? login : name;
         this.birthday = birthday;
     }
-
 }

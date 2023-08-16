@@ -43,6 +43,7 @@ public class FilmService {
         log.debug("удаляем фильм id:{}", filmId);
         return filmStorage.delete(filmId);
     }
+
     public List<Film> getPopular(Integer count) {
         log.info("получаем список фильмов по количеству лайков :{}", count);
         return filmStorage.getAllFilms().stream()
@@ -50,6 +51,7 @@ public class FilmService {
                 .limit(count)
                 .collect(Collectors.toList());
     }
+
     public void addLike(Long filmId, Long userId) {
         log.debug("добавляем лайк фильму id:{}", filmId);
         Film film = filmStorage.getFilm(filmId);

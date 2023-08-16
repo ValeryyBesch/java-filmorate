@@ -13,9 +13,10 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
     private Long generateId = 1L;
+
     @Override
     public User createUser(User user) {
         log.debug("создаем пользователя: {}", user);
@@ -44,7 +45,7 @@ public class InMemoryUserStorage implements UserStorage{
     @Override
     public User getUser(Long userId) {
         log.debug("получаем пользователя по id: {}", userId);
-        if (!users.containsKey(userId)){
+        if (!users.containsKey(userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с id=" + userId + " не найден!");
         }
         return users.get(userId);
@@ -53,7 +54,7 @@ public class InMemoryUserStorage implements UserStorage{
     @Override
     public User delete(Long userId) {
         log.debug("удаляем пользователя по id: {}", userId);
-        if (!users.containsKey(userId)){
+        if (!users.containsKey(userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с id=" + userId + " не найден!");
         }
         return users.remove(userId);

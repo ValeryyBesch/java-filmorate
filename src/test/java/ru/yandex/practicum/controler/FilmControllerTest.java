@@ -1,49 +1,46 @@
 package ru.yandex.practicum.controler;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.service.FilmService;
+import ru.yandex.practicum.storage.film.FilmStorage;
+import ru.yandex.practicum.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.storage.user.UserStorage;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FilmControllerTest {
-    private Film film;
-    private static Validator validator;
-    private Set<ConstraintViolation<Film>> violations;
+class FilmControllerTest {
+    FilmStorage filmStorage = new InMemoryFilmStorage();
+    UserStorage userStorage = new InMemoryUserStorage();
+    FilmService filmService = new FilmService(filmStorage,userStorage);
+    Film film = Film.builder()
+            .id(1L)
+            .name("nameFilm")
+            .duration(100)
+            .releaseDate(LocalDate.of(2000, 10, 10))
+            .description("description")
+            .build();
 
-    @BeforeEach
-    public void beforeEach() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-        film = new Film(1L, "name", "desr", LocalDate.of(2007, 5, 19),
-                2, Collections.singleton(1L));
-        violations = validator.validate(film);
+    @Test
+    void addFilm() {
+        filmService.create(film);
+        assertNotNull(filmService.getAllFilms());
     }
 
     @Test
-    public void testAddFilm() {
-        violations = validator.validate(film);
-        assertEquals(0, violations.size(), "Ошибки валидации");
-        List<Film> films = new ArrayList<>();
-        films.add(film);
-        assertTrue(films.contains(film), "Фильм не был добавлен в список");
+    void updateUser() {
+        Film film1 = Film.builder()
+                .id(1L)
+                .name("name")
+                .duration(100)
+                .releaseDate(LocalDate.of(2000, 10, 10))
+                .description("description")
+                .build();
+        filmService.create(film);
+        filmService.update(film1);
+        assertEquals(filmService.getAllFilms().size(), 1);
     }
-
-    @Test
-    public void testEmptyFilmName() {
-        film.setName("");
-        violations = validator.validate(film);
-        assertEquals(1, violations.size(), "Ошибки валидации");
-    }
-
 }

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.storage.user.UserStorage;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
     private final UserStorage userStorage;
 
@@ -39,6 +41,11 @@ public class UserService {
     }
 
     public void addFriend(Long userId, Long friendId) {
+        log.debug("добавляем друга по id: {}",friendId);
+        if (userId.equals(friendId)) {
+            log.debug("Попытка добавить себя в друзья.");
+            return;
+        }
         User user = userStorage.getUser(userId);
         User friend = userStorage.getUser(friendId);
         user.getFriends().add(friendId);
@@ -46,6 +53,7 @@ public class UserService {
     }
 
     public void deleteFriend(Long userId, Long friendId) {
+        log.debug("удаляем друга по id: {}",friendId);
         User user = userStorage.getUser(userId);
         User friend = userStorage.getUser(friendId);
         user.getFriends().remove(friendId);
@@ -53,11 +61,13 @@ public class UserService {
     }
 
     public List<User> getFriends(Long userId) {
+        log.debug("получаем список друзей пользователя по id: {}",userId);
         Set<Long> friendIds = userStorage.getUser(userId).getFriends();
         return friendIds.stream().map(userStorage::getUser).collect(Collectors.toList());
     }
 
     public List<User> getCommonFriends(Long firstUserId, Long secondUserId) {
+        log.debug("получаем список общих друзей по id {} и {}",firstUserId, secondUserId);
         User firstUser = userStorage.getUser(firstUserId);
         User secondUser = userStorage.getUser(secondUserId);
         Set<Long> firstUserFriends = new HashSet<>(firstUser.getFriends());

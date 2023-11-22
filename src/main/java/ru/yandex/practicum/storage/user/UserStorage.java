@@ -2,17 +2,25 @@ package ru.yandex.practicum.storage.user;
 
 import ru.yandex.practicum.model.User;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface UserStorage {
-    User createUser(@Valid User user);
 
-    User updateUser(@Valid User user);
+    List<User> findAllUsers();
 
-    List<User> getAllUsers();
+    User addUser(User user);
 
-    User getUser(Long userId);
+    User updateUser(User user);
 
-    User delete(Long userId);
+    User addFriend(Integer userId, Integer friendId);
+
+    User deleteFriend(Integer userId, Integer friendId);
+
+    List<User> getMutualFriends(Integer id, Integer otherId);
+
+    User getUserById(Integer id);
+
+    List<User> getFriendsByUserId(Integer id);
+
 }
+

@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import ru.yandex.practicum.annotation.ValidReleaseDate;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -17,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Film {
-    private Long id;
+    private Integer id;
     @NotBlank
     @NotNull
     private String name;
@@ -31,6 +33,8 @@ public class Film {
     @NotNull
     @Positive
     private int duration;
-
-    private Set<Long> likes = new HashSet<>();
+    private Set<Integer> likes = new HashSet<>();
+    @NotNull
+    private Mpa mpa;
+    private Set<Genre> genres;
 }

@@ -4,16 +4,20 @@ import ru.yandex.practicum.model.Film;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 public interface FilmStorage {
+    List<Film> findAllFilms();
 
-    List<Film> getAllFilms();
+    Film addFilm(Film film);
 
-    Film create(@Valid Film film);
+    Film updateFilm(Film film);
 
-    Film update(@Valid Film film);
+    Film getFilmById(int id);
 
-    Film getFilm(Long filmId);
+    Film like(int filmId, int userId);
 
-    Film delete(Long filmId);
+    Film deleteLike(int filmId, int userId);
+
+    List<Film> getRating(int count);
 }

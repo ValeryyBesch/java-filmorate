@@ -17,5 +17,6 @@ public interface GenresDb {
     void updateGenres(Film film);
 
     Genre getGenre(int id);
+
     void addGenreByFilm(Film film);
 }

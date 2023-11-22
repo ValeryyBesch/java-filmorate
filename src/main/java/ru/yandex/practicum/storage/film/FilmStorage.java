@@ -2,9 +2,7 @@ package ru.yandex.practicum.storage.film;
 
 import ru.yandex.practicum.model.Film;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 public interface FilmStorage {
     List<Film> findAllFilms();

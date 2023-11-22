@@ -22,7 +22,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class FilmDbStorage implements FilmStorage{
+public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final UserStorage userStorage;
     private final MpaDb mpaDbStorage;

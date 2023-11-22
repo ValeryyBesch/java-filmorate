@@ -11,8 +11,6 @@ import ru.yandex.practicum.storage.film.FilmStorage;
 import javax.validation.Valid;
 import java.util.List;
 
-
-
 @RestController
 @Slf4j
 @RequestMapping("/films")

@@ -26,6 +26,7 @@ public class UserController {
         return userStorage.addUser(user);
     }
 
+
     @PutMapping
     public User changeUser(@Valid @RequestBody User user) {
         log.info("обновление пользователя.");

@@ -22,7 +22,7 @@ public class User {
     private String login;
 
     private String name;
-    @PastOrPresent
+    @Past
     private LocalDate birthday;
 
     private Set<Integer> friends;

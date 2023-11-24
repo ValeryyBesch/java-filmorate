@@ -72,6 +72,9 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User addFriend(Integer userId, Integer friendId) {
         User user = getUserById(userId);
+        if(Objects.equals(userId, friendId)){
+            throw new NotValidationException("Нельзя добавить самого себя");
+        }
         try {
             getUserById(friendId);
         } catch (RuntimeException e) {
@@ -92,11 +95,14 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public List<User> getMutualFriends(Integer id, Integer otherId) {
-        String sqlQuery = "SELECT user_id, email, login, name, birthday FROM users WHERE user_id IN(" +
-                "SELECT friend_id FROM friends WHERE user_id = ?) " +
-                "AND user_id IN(SELECT friend_id FROM friends WHERE user_id = ?)";
+        String sqlQuery = "SELECT u.user_id, u.email, u.login, u.name, u.birthday " +
+                "FROM users u " +
+                "JOIN friends f1 ON u.user_id = f1.friend_id " +
+                "JOIN friends f2 ON u.user_id = f2.friend_id " +
+                "WHERE f1.user_id = ? AND f2.user_id = ?";
         return new ArrayList<>(jdbcTemplate.query(sqlQuery, this::mapRowToUser, id, otherId));
     }
+
 
     @Override
     public User getUserById(Integer id) {

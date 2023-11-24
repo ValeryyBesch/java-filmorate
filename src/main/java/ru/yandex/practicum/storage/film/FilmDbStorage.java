@@ -93,6 +93,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film like(int filmId, int userId) {
+        if (userStorage.getUserById(userId) == null) {
+            throw new NotFoundException("Пользователь не найден.");
+        }
         Film film = getFilmById(filmId);
         String sqlQuery = "INSERT INTO likes (film_id, user_id) VALUES(?, ?)";
         jdbcTemplate.update(sqlQuery, filmId, userId);

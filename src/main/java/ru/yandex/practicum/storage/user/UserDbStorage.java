@@ -72,7 +72,7 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User addFriend(Integer userId, Integer friendId) {
         User user = getUserById(userId);
-        if(Objects.equals(userId, friendId)){
+        if (Objects.equals(userId, friendId)) {
             throw new NotValidationException("Нельзя добавить самого себя");
         }
         try {

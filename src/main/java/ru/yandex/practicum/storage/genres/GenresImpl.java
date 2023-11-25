@@ -1,6 +1,7 @@
 package ru.yandex.practicum.storage.genres;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -62,13 +63,13 @@ public class GenresImpl implements GenresDb {
     }
 
     public Genre getGenre(int id) {
+
         String sqlQuery = "SELECT genre_id, name FROM genre_type WHERE genre_id=?";
         try {
             return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToGenre, id);
-        } catch (RuntimeException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("жанр не найден.");
         }
-
     }
 
     public void addGenreByFilm(Film film) {

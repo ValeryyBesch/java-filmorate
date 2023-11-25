@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.exceotion.NotFoundException;
+import ru.yandex.practicum.exceotion.NotValidationException;
 import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.model.Genre;
 import ru.yandex.practicum.storage.genres.GenresDb;
 import ru.yandex.practicum.storage.like.LikeDb;
 import ru.yandex.practicum.storage.mpa.MpaDb;
@@ -16,7 +18,9 @@ import ru.yandex.practicum.storage.user.UserStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
+
 
 @Primary
 @Slf4j
@@ -53,15 +57,41 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film addFilm(Film film) {
+        if (filmExistsByNameAndReleaseDate(film.getName(), film.getReleaseDate())) {
+            throw new NotValidationException("Фильм с таким именем и датой выпуска уже существует.");
+        }
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("films")
                 .usingGeneratedKeyColumns("film_id");
         film.setId(simpleJdbcInsert.executeAndReturnKey(toMap(film)).intValue());
         mpaDbStorage.addMpa(film);
+        validateGenresExist(film);
         genreDbStorage.addGenreByFilm(film);
         genreDbStorage.addGenres(film);
         log.info("Поступил запрос на добавление фильма. Фильм добавлен.");
         return film;
+    }
+
+    private void validateGenresExist(Film film) {
+        if (film.getGenres() != null) {
+            for (Genre genre : film.getGenres()) {
+                if (!genreExistsById(genre.getId())) {
+                    throw new NotFoundException("Жанр не найден.");
+                }
+            }
+        }
+    }
+
+    private boolean genreExistsById(int id) {
+        String sqlQuery = "SELECT COUNT(*) FROM genre_type WHERE genre_id = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlQuery, Integer.class, id);
+        return count != null && count > 0;
+    }
+
+    private boolean filmExistsByNameAndReleaseDate(String name, LocalDate releaseDate) {
+        String sqlQuery = "SELECT COUNT(*) FROM films WHERE name = ? AND release_date = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlQuery, Integer.class, name, releaseDate);
+        return count != null && count > 0;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class User {
     @NotNull
     @NotBlank
     private String login;
-
+    @NotNull
     private String name;
     @Past
     private LocalDate birthday;

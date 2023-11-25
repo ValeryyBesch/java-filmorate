@@ -45,6 +45,9 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
+        if (userExistsByEmailOrLogin(user.getEmail(), user.getLogin())) {
+            throw new NotFoundException("Пользователь с таким email или login уже существует");
+        }
         validationUser(user);
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
@@ -53,6 +56,13 @@ public class UserDbStorage implements UserStorage {
         log.info("Поступил запрос на добавление пользователя. Пользователь добавлен.");
         return user;
     }
+
+    private boolean userExistsByEmailOrLogin(String email, String login) {
+        String sqlQuery = "SELECT COUNT(*) FROM users WHERE email = ? OR login = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlQuery, Integer.class, email, login);
+        return count != null && count > 0;
+    }
+
 
     @Override
     public User updateUser(User user) {

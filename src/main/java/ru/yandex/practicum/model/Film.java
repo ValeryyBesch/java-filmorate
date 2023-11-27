@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Film {
-    private Long id;
+    private Integer id;
     @NotBlank
     @NotNull
     private String name;
@@ -31,6 +31,8 @@ public class Film {
     @NotNull
     @Positive
     private int duration;
-
-    private Set<Long> likes = new HashSet<>();
+    private Set<Integer> likes = new HashSet<>();
+    @NotNull
+    private Mpa mpa;
+    private Set<Genre> genres;
 }
